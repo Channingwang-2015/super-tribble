@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Register | Thinking Routines</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--accent:#87CEEB}
+    body{font-family:Open Sans,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#fff,#f3f7fb);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .card{background:#fff;padding:28px;border-radius:12px;max-width:480px;width:100%;box-shadow:0 8px 30px rgba(10,20,40,0.06)}
+    h1{font-family:Fredoka One, cursive;margin:0 0 8px}
+    label{display:block;margin:8px 0 6px;font-weight:600;color:#334155}
+    input{width:100%;padding:10px;border-radius:8px;border:1px solid #e6edf3;font-size:15px}
+    .actions{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+    .btn{background:var(--accent);border:none;color:#fff;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:700}
+    .small{font-size:13px;color:#64748b}
+    .error{color:#b91c1c;margin-top:8px}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Create account</h1>
+    <p class="small">This is a demo registration page storing accounts locally in your browser for testing.</p>
+
+    <form id="register-form" autocomplete="off">
+      <div>
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" required placeholder="choose a username">
+      </div>
+
+      <div>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required placeholder="password">
+      </div>
+
+      <div>
+        <label for="confirm">Confirm password</label>
+        <input id="confirm" name="confirm" type="password" required placeholder="confirm password">
+      </div>
+
+      <div class="actions">
+        <a href="login.html" class="small">Back to sign in</a>
+        <button class="btn" type="submit">Register</button>
+      </div>
+
+      <div id="msg" class="error" style="display:none" role="alert"></div>
+    </form>
+  </main>
+
+  <script>
+    // Simple client-side registration demo. Stores accounts in localStorage under 'registered_users'.
+    function loadUsers(){
+      try{ return JSON.parse(localStorage.getItem('registered_users')||'[]'); }catch(e){return[]}
+    }
+    function saveUsers(users){ localStorage.setItem('registered_users', JSON.stringify(users)); }
+
+    document.getElementById('register-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value;
+      const c = document.getElementById('confirm').value;
+      const msg = document.getElementById('msg');
+      msg.style.display = 'none';
+
+      if (!u) { msg.textContent = 'Please enter a username.'; msg.style.display='block'; return; }
+      if (p.length < 4) { msg.textContent = 'Password must be at least 4 characters.'; msg.style.display='block'; return; }
+      if (p !== c) { msg.textContent = 'Passwords do not match.'; msg.style.display='block'; return; }
+
+      const users = loadUsers();
+      if (users.find(x=>x.username.toLowerCase()===u.toLowerCase())){
+        msg.textContent = 'That username is already registered.'; msg.style.display='block'; return;
+      }
+
+      users.push({ username: u, password: p, created: Date.now() });
+      saveUsers(users);
+
+      try{ sessionStorage.setItem('auth_session', JSON.stringify({username:u,time:Date.now()})); }catch(e){}
+      // Go to homepage after registration
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

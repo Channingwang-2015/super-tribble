@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Login | Thinking Routines</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--accent:#87CEEB;--bg:#f7fafc}
+        body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#fff 0%,#f3f7fb 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+        .card{background:white;padding:28px;border-radius:12px;box-shadow:0 6px 30px rgba(10,20,40,0.08);width:100%;max-width:420px}
+        h1{font-family:'Fredoka One',cursive;margin:0 0 8px;font-size:24px;color:#0f172a}
+        p.lead{margin:0 0 18px;color:#475569}
+        label{display:block;font-weight:600;margin-bottom:6px;color:#374151}
+        input[type="text"],input[type="password"]{width:100%;padding:12px;border-radius:8px;border:1px solid #e6edf3;margin-bottom:12px;font-size:15px}
+        .actions{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+        .btn{background:var(--accent);color:white;padding:10px 16px;border-radius:8px;border:none;cursor:pointer;font-weight:700}
+        .note{font-size:13px;color:#64748b;margin-top:10px}
+        .error{color:#b91c1c;margin-top:8px}
+        .small{font-size:13px;color:#64748b}
+        .link{color:var(--accent);text-decoration:none}
+    </style>
+</head>
+<body>
+    <main class="card" role="main">
+        <h1>Sign in</h1>
+        <p class="lead">Access your Thinking Routines workspace.</p>
+
+        <form id="login-form" autocomplete="off">
+            <div>
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text" placeholder="username" required>
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" placeholder="password" required>
+            </div>
+
+            <div class="actions">
+                <div class="small"><label><input id="remember" type="checkbox"> Remember me</label></div>
+                <button class="btn" type="submit">Sign in</button>
+            </div>
+
+            <div id="error" class="error" role="alert" aria-live="polite" style="display:none"></div>
+        </form>
+
+    </main>
+
+    <script>
+        // Simple client-side demo login. Replace with real auth for production.
+        const MOCK_USER = { username: 'admin', password: 'admin123' };
+
+        function setSession(user, remember) {
+            const data = { username: user.username, time: Date.now() };
+            try {
+                if (remember) localStorage.setItem('auth_session', JSON.stringify(data));
+                else sessionStorage.setItem('auth_session', JSON.stringify(data));
+            } catch (e) {
+                console.warn('Storage failed', e);
+            }
+        }
+
+        function isLoggedIn(){
+            return sessionStorage.getItem('auth_session') || localStorage.getItem('auth_session');
+        }
+
+        // If already logged in, go to homepage
+        if (isLoggedIn()) {
+            window.location.href = 'index.html';
+        }
+
+        function loadRegistered(){
+            try { return JSON.parse(localStorage.getItem('registered_users') || '[]'); }
+            catch(e){ return []; }
+        }
+
+        document.getElementById('login-form').addEventListener('submit', function(e){
+            e.preventDefault();
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+            const err = document.getElementById('error');
+
+            const users = loadRegistered();
+            const found = users.find(x=>x.username.toLowerCase()===u.toLowerCase() && x.password===p);
+            if (found) {
+                setSession(found, remember);
+                err.style.display = 'none';
+                window.location.href = 'index.html';
+                return;
+            }
+
+            if (u === MOCK_USER.username && p === MOCK_USER.password) {
+                setSession(MOCK_USER, remember);
+                err.style.display = 'none';
+                window.location.href = 'index.html';
+                return;
+            }
+
+            err.textContent = 'Invalid username or password.';
+            err.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
