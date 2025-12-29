@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thinking Routines Practice in Kindergarten | Harvard Project Zero</title>
+    <meta name="description" content="Explore thinking routines from Harvard's Project Zero in kindergarten practice. See-Think-Wonder, Color-Symbol-Image, and reflection activities for young learners.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Open+Sans:wght@300;400;600;700&family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --sky-blue: #87CEEB;
+            --warm-coral: #FF7F7F;
+            --sage-green: #9CAF88;
+            --creamy-white: #FFF8DC;
+            --golden-yellow: #FFD700;
+            --lavender: #E6E6FA;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, var(--creamy-white) 0%, #f8f9ff 50%, var(--lavender) 100%);
+            min-height: 100vh;
+        }
+        
+        .font-display {
+            font-family: 'Fredoka One', cursive;
+        }
+        
+        .font-handwriting {
+            font-family: 'Comic Neue', cursive;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url('hero-kindergarten-class.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .nav-tag {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .nav-tag:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .upload-zone {
+            border: 3px dashed var(--sky-blue);
+            transition: all 0.3s ease;
+        }
+        
+        .upload-zone:hover, .upload-zone.drag-over {
+            border-color: var(--warm-coral);
+            background: rgba(255, 127, 127, 0.1);
+        }
+        
+        .uploaded-photo {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .uploaded-photo img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .remove-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--warm-coral);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+        }
+        
+        .typewriter {
+            display: inline-block;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+        }
+        
+        .notification.info {
+            background: var(--sky-blue);
+        }
+        
+        .notification.success {
+            background: var(--sage-green);
+        }
+        
+        .notification.error {
+            background: var(--warm-coral);
+        }
+        
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .gallery-photo {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-photo:hover {
+            transform: translateY(-5px);
+        }
+        
+        .gallery-photo img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .gallery-photo .photo-info {
+            padding: 12px;
+            background: white;
+        }
+        
+        .tag-see { background: linear-gradient(135deg, var(--sky-blue), #a8d8ea); }
+        .tag-before { background: linear-gradient(135deg, var(--golden-yellow), #ffed4e); }
+        .tag-color { background: linear-gradient(135deg, var(--warm-coral), #ff9999); }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="font-display text-xl text-gray-800">Thinking Routines</h1>
+                    <span class="ml-2 text-sm text-gray-600">Kindergarten Practice</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-blue-600 transition-colors">Home</a>
+                    <a href="see-think-wonder.html" class="text-gray-700 hover:text-blue-600 transition-colors">See-Think-Wonder</a>
+                    <a href="before-now.html" class="text-gray-700 hover:text-blue-600 transition-colors">Before-Now</a>
+                    <a href="color-symbol-image.html" class="text-gray-700 hover:text-blue-600 transition-colors">Color-Symbol-Image</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section py-20 px-4">
+        <div class="max-w-6xl mx-auto text-center">
+            <h1 class="font-display text-5xl md:text-7xl mb-6 text-gray-800">
+                <span class="typewriter">Eve's Thinking Routines Community</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">
+                Discover how kindergarten children develop critical thinking skills through Harvard Project Zero's innovative thinking routines
+            </p>
+            
+            <!-- About Me Section -->
+            <div class="max-w-4xl mx-auto mb-12">
+                <div class="card rounded-2xl p-8">
+                    <h2 class="font-display text-3xl mb-6 text-center text-gray-800">About Me</h2>
+                    <div class="grid md:grid-cols-3 gap-8 items-center">
+                        <div class="text-center">
+                            <img src="截图.jpeg" alt="Yi Chen (Eve)" class="w-48 h-48 mx-auto rounded-full shadow-lg object-cover">
+                        </div>
+                        <div class="md:col-span-2">
+                            <h3 class="font-display text-2xl mb-4 text-gray-800">Yi Chen (Eve)</h3>
+                            <p class="text-gray-700 mb-4">
+                                I am an educator with <strong>20 years</strong> of experience in early childhood education and an <strong>IB workshop leader</strong>.
+                                I am passionate about exploring how thinking routines can help young children develop critical thinking skills.
+                            </p>
+                            <p class="text-gray-700">
+                                I hope to explore together how Harvard's thinking routines can be used in kindergarten and to help build a learning
+                                community that supports deep thinking in young children.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <img src="hero-kindergarten-class.png" alt="Kindergarten classroom scene" class="rounded-2xl shadow-2xl max-w-md w-full">
+            </div>
+        </div>
+    </section>
+
+    <!-- Background Information -->
+    <section class="py-16 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="card rounded-2xl p-8 mb-12">
+                <h2 class="font-display text-3xl mb-6 text-center text-gray-800">About Harvard Project Zero</h2>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <p class="text-gray-700 mb-4">
+                            <strong>Project Zero</strong> is an educational research group at the Harvard Graduate School of Education. 
+                            Their mission is to understand and enhance learning, thinking, and creativity in all disciplines.
+                        </p>
+                        <p class="text-gray-700 mb-4">
+                            <strong>Thinking Routines</strong> are simple structures that help students observe, organize, reason, 
+                            and reflect on ideas. They make thinking visible and create a culture of curiosity in the classroom.
+                        </p>
+                        <p class="text-gray-700">
+                            In kindergarten, these routines help young learners develop <em>metacognitive awareness</em> - 
+                            the ability to think about their own thinking.
+                        </p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-blue-50 rounded-xl p-6">
+                            <h3 class="font-display text-xl mb-4 text-blue-800">Key Benefits</h3>
+                            <ul class="text-left space-y-2 text-gray-700">
+                                <li>• Builds observation skills</li>
+                                <li>• Encourages critical thinking</li>
+                                <li>• Develops communication</li>
+                                <li>• Fosters curiosity</li>
+                                <li>• Makes learning visible</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Thinking Routine Navigation Tags -->
+    <section class="py-16 px-4 bg-gradient-to-r from-blue-50 to-purple-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="font-display text-4xl text-center mb-12 text-gray-800">Explore Thinking Routines</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <!-- See-Think-Wonder Tag -->
+                <div class="nav-tag card rounded-2xl p-8 text-center tag-see" onclick="navigateToRoutine('see-think-wonder')">
+                    <div class="mb-6">
+                        <img src="see-think-wonder-visual.png" alt="See-Think-Wonder routine" class="w-32 h-32 mx-auto rounded-xl">
+                    </div>
+                    <h3 class="font-display text-2xl mb-4 text-white">See-Think-Wonder</h3>
+                    <p class="text-white/90 mb-4">
+                        A powerful routine that encourages careful observation, thoughtful interpretation, and curiosity. 
+                        Perfect for exploring images, objects, and ideas.
+                    </p>
+                    <div class="text-sm text-white/80">
+                        <strong>Best for:</strong> Introducing new topics, exploring art, examining objects
+                    </div>
+                </div>
+
+                <!-- Before I Think, Now I Know Tag -->
+                <div class="nav-tag card rounded-2xl p-8 text-center tag-before" onclick="navigateToRoutine('before-now')">
+                    <div class="mb-6">
+                        <img src="used-to-think-visual.png" alt="Before-Now routine" class="w-32 h-32 mx-auto rounded-xl">
+                    </div>
+                    <h3 class="font-display text-2xl mb-4 text-gray-800">Before I Think<br>Now I Know</h3>
+                    <p class="text-gray-700 mb-4">
+                        A reflection routine that helps students recognize how their thinking has changed and grown over time. 
+                        Builds metacognitive awareness.
+                    </p>
+                    <div class="text-sm text-gray-600">
+                        <strong>Best for:</strong> End of units, reflection, showing growth
+                    </div>
+                </div>
+
+                <!-- Color-Symbol-Image Tag -->
+                <div class="nav-tag card rounded-2xl p-8 text-center tag-color" onclick="navigateToRoutine('color-symbol-image')">
+                    <div class="mb-6">
+                        <img src="color-symbol-image-visual.png" alt="Color-Symbol-Image routine" class="w-32 h-32 mx-auto rounded-xl">
+                    </div>
+                    <h3 class="font-display text-2xl mb-4 text-white">Color-Symbol-Image</h3>
+                    <p class="text-white/90 mb-4">
+                        A creative routine that helps students express understanding through visual metaphors. 
+                        Encourages abstract thinking and personal connections.
+                    </p>
+                    <div class="text-sm text-white/80">
+                        <strong>Best for:</strong> Synthesizing ideas, creative expression, character analysis
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started Guide -->
+    <section class="py-16 px-4 bg-gray-50">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="font-display text-3xl mb-8 text-center text-gray-800">Getting Started</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-blue-600">1</span>
+                    </div>
+                    <h3 class="font-display text-xl mb-2">Choose a Routine</h3>
+                    <p class="text-gray-600">Pick a thinking routine that matches your learning goals</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-yellow-600">2</span>
+                    </div>
+                    <h3 class="font-display text-xl mb-2">Practice & Document</h3>
+                    <p class="text-gray-600">Try the routine with your students and capture the moments</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-green-600">3</span>
+                    </div>
+                    <h3 class="font-display text-xl mb-2">Reflect & Grow</h3>
+                    <p class="text-gray-600">Observe student thinking and document their learning journey</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Community Upload & Gallery -->
+    <section class="py-16 px-4 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="font-display text-3xl mb-6 text-center text-gray-800">Share Photos & Comments</h2>
+
+            <div class="card rounded-2xl p-8 mb-8">
+                <div class="grid md:grid-cols-2 gap-6 items-start">
+                    <div>
+                        <label class="block mb-2 font-semibold">Add photos</label>
+                        <input id="community-files" type="file" accept="image/*" multiple class="w-full" />
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-semibold">Comment</label>
+                        <textarea id="community-comment" class="w-full p-3 border rounded-md min-h-[120px]" placeholder="Write a short caption or comment..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-6 text-right">
+                    <button id="community-upload" class="bg-blue-600 text-white px-6 py-3 rounded-lg">Upload to Community Gallery</button>
+                </div>
+            </div>
+
+            <h3 class="font-display text-2xl mb-4 text-gray-800">Community Gallery</h3>
+            <div id="community-gallery" class="photo-gallery mb-12"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="mb-2">&copy; 2025 Eve's Thinking Routines Community</p>
+            <p class="text-gray-400 text-sm">
+                Inspired by Harvard Project Zero | CS50 Week 10 Final Project
+            </p>
+            <p class="text-gray-400 text-xs mt-2">
+                To know more about thinking routines, visit 
+                <a href="https://pz.harvard.edu/thinking-routines" target="_blank" class="text-blue-400 hover:text-blue-300 underline">
+                    Harvard Project Zero
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Main JavaScript -->
+    <script src="main.js"></script>
+</body>
+</html>

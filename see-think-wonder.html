@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>See-Think-Wonder | Thinking Routines Practice in Kindergarten</title>
+    <meta name="description" content="Explore the See-Think-Wonder thinking routine in kindergarten practice. Help children observe carefully, think deeply, and wonder about the world around them.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Open+Sans:wght@300;400;600;700&family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --sky-blue: #87CEEB;
+            --warm-coral: #FF7F7F;
+            --sage-green: #9CAF88;
+            --creamy-white: #FFF8DC;
+            --golden-yellow: #FFD700;
+            --lavender: #E6E6FA;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, var(--creamy-white) 0%, #f8f9ff 50%, var(--lavender) 100%);
+            min-height: 100vh;
+        }
+        
+        .font-display {
+            font-family: 'Fredoka One', cursive;
+        }
+        
+        .font-handwriting {
+            font-family: 'Comic Neue', cursive;
+        }
+        
+        .card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .stw-interactive-image {
+            cursor: crosshair;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .stw-interactive-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .stw-popup {
+            position: absolute;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        
+        .stw-tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-btn.active {
+            color: var(--sky-blue);
+            border-bottom-color: var(--sky-blue);
+        }
+        
+        .tab-content textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            resize: vertical;
+        }
+        
+        .student-voice {
+            background: linear-gradient(135deg, #fff9e6, #fff5cc);
+            border-left: 4px solid var(--golden-yellow);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            position: relative;
+        }
+        
+        .student-voice::before {
+            content: '"';
+            font-size: 3rem;
+            color: var(--golden-yellow);
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            font-family: serif;
+        }
+        
+        .student-voice p {
+            margin-left: 30px;
+            font-style: italic;
+            color: #666;
+        }
+        
+        .student-voice .student-name {
+            text-align: right;
+            font-weight: 600;
+            color: #333;
+            font-style: normal;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 8px 0;
+            transition: background-color 0.3s ease;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+        
+        .checklist-item label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 16px;
+        }
+        
+        .upload-zone {
+            border: 3px dashed var(--sky-blue);
+            transition: all 0.3s ease;
+        }
+        
+        .upload-zone:hover, .upload-zone.drag-over {
+            border-color: var(--warm-coral);
+            background: rgba(255, 127, 127, 0.1);
+        }
+        
+        .uploaded-photo {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .uploaded-photo img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .gallery-photo {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-photo:hover {
+            transform: translateY(-5px);
+        }
+        
+        .gallery-photo img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .gallery-photo .photo-info {
+            padding: 12px;
+            background: white;
+        }
+        
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--sky-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, var(--sky-blue), transparent);
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="font-display text-xl text-gray-800">Thinking Routines</h1>
+                    <span class="ml-2 text-sm text-gray-600">See-Think-Wonder</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 transition-colors">Home</a>
+                    <a href="see-think-wonder.html" class="text-blue-600 font-semibold">See-Think-Wonder</a>
+                    <a href="before-now.html" class="text-gray-700 hover:text-blue-600 transition-colors">Before-Now</a>
+                    <a href="color-symbol-image.html" class="text-gray-700 hover:text-blue-600 transition-colors">Color-Symbol-Image</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-16 px-4 bg-gradient-to-r from-blue-50 to-cyan-50">
+        <div class="max-w-4xl mx-auto text-center">
+            <img src="see-think-wonder-visual.png" alt="See-Think-Wonder routine" class="w-48 h-48 mx-auto mb-8 rounded-2xl shadow-lg">
+            <h1 class="font-display text-5xl md:text-6xl mb-6 text-gray-800">
+                <span class="typewriter">See-Think-Wonder</span>
+            </h1>
+            <p class="text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
+                A powerful thinking routine that encourages careful observation, thoughtful interpretation, 
+                and curiosity about the world around us.
+            </p>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="font-display text-4xl text-center mb-12 text-gray-800">How See-Think-Wonder Works</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <!-- SEE -->
+                <div class="card rounded-2xl p-8 text-center">
+                    <div class="step-indicator">
+                        <div class="step-number">1</div>
+                        <div class="step-line"></div>
+                    </div>
+                    <h3 class="font-display text-2xl mb-4 text-blue-600">SEE</h3>
+                    <p class="text-gray-700 mb-4">
+                        Look carefully and describe what you observe. Focus on details, colors, shapes, and patterns.
+                    </p>
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <p class="font-handwriting text-lg text-blue-800">"I see..."</p>
+                        <p class="text-sm text-blue-600 mt-2">Encourage specific observations</p>
+                    </div>
+                </div>
+
+                <!-- THINK -->
+                <div class="card rounded-2xl p-8 text-center">
+                    <div class="step-indicator">
+                        <div class="step-number">2</div>
+                        <div class="step-line"></div>
+                    </div>
+                    <h3 class="font-display text-2xl mb-4 text-green-600">THINK</h3>
+                    <p class="text-gray-700 mb-4">
+                        Make connections and interpretations. What do you think is happening? What does it remind you of?
+                    </p>
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <p class="font-handwriting text-lg text-green-800">"I think..."</p>
+                        <p class="text-sm text-green-600 mt-2">Build on observations with thinking</p>
+                    </div>
+                </div>
+
+                <!-- WONDER -->
+                <div class="card rounded-2xl p-8 text-center">
+                    <div class="step-indicator">
+                        <div class="step-number">3</div>
+                    </div>
+                    <h3 class="font-display text-2xl mb-4 text-purple-600">WONDER</h3>
+                    <p class="text-gray-700 mb-4">
+                        Ask questions and express curiosity. What do you want to know more about?
+                    </p>
+                    <div class="bg-purple-50 rounded-lg p-4">
+                        <p class="font-handwriting text-lg text-purple-800">"I wonder..."</p>
+                        <p class="text-sm text-purple-600 mt-2">Generate questions and curiosity</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips for Success Section -->
+    <section class="py-16 px-4 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="font-display text-4xl text-center mb-12 text-gray-800">Tips for Success</h2>
+            
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Getting Started Tips -->
+                <div class="card rounded-2xl p-8">
+                    <h3 class="font-display text-2xl mb-6 text-center text-blue-600">Getting Started</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-2">•</span>
+                            Choose high-quality, interesting images
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-2">•</span>
+                            Start with familiar objects for young children
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-2">•</span>
+                            Model your own thinking first
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-2">•</span>
+                            Accept all observations without judgment
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-2">•</span>
+                            Use the language stems consistently
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Practice Checklist -->
+                <div class="card rounded-2xl p-8">
+                    <h3 class="font-display text-2xl mb-6 text-center">Practice Checklist</h3>
+                    <p class="text-gray-600 mb-6 text-center">
+                        Use this checklist as you practice See-Think-Wonder with your students.
+                    </p>
+                    
+                    <div class="space-y-3">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="prep">
+                            <label for="prep">Prepare an interesting image, object, or scene</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="see-first">
+                            <label for="see-first">Start with "What do you SEE?" - only observations</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="think-next">
+                            <label for="think-next">Move to "What do you THINK?" - interpretations</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="wonder-last">
+                            <label for="wonder-last">End with "What do you WONDER?" - questions</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="document">
+                            <label for="document">Document student thinking with photos or notes</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="share">
+                            <label for="share">Share your practice in our community gallery</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Voices -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="font-display text-4xl text-center mb-12 text-gray-800">Student Voices</h2>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Student Work Carousel -->
+                <div>
+                    <h3 class="font-display text-xl mb-4 text-center text-gray-800">Inquiry Question: What do you find in the primary school?</h3>
+                    <div class="splide" data-routine="see-think-wonder">
+                        <div class="splide__track">
+                            <ul class="splide__list">
+                                <li class="splide__slide">
+                                    <div class="card rounded-xl p-4">
+                                        <img src="https://kimi-web-img.moonshot.cn/img/media.istockphoto.com/5da3dec371453ec1fecc7d2383583c07ff39cb43.jpg" 
+                                             alt="Student observation drawing" class="w-full h-48 object-cover rounded-lg mb-4">
+                                        <p class="text-sm text-gray-600 text-center">Student drawing of classroom observations</p>
+                                    </div>
+                                </li>
+                                <li class="splide__slide">
+                                    <div class="card rounded-xl p-4">
+                                        <img src="https://kimi-web-img.moonshot.cn/img/images.squarespace-cdn.com/05f14a5628b369da26dac89aba81727c6625fa33.jpg" 
+                                             alt="Student nature exploration" class="w-full h-48 object-cover rounded-lg mb-4">
+                                        <p class="text-sm text-gray-600 text-center">Exploring nature during See-Think-Wonder</p>
+                                    </div>
+                                </li>
+                                <li class="splide__slide">
+                                    <div class="card rounded-xl p-4">
+                                        <img src="https://kimi-web-img.moonshot.cn/img/casaearlylearning.com/cc9ad7ff92892a81c5084c3af9b189542daf5cef.jpg" 
+                                             alt="Student collaborative work" class="w-full h-48 object-cover rounded-lg mb-4">
+                                        <p class="text-sm text-gray-600 text-center">Collaborative thinking documentation</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Quotes -->
+                <div>
+                    <div class="space-y-6">
+                        <div class="student-voice">
+                            <p>"I see red apples. I think they are ready to eat. I wonder if they came from a tree near our school."</p>
+                            <p class="student-name">- Emma, age 5</p>
+                        </div>
+                        
+                        <div class="student-voice">
+                            <p>"I see a butterfly. I think it's looking for flowers. I wonder where its family is."</p>
+                            <p class="student-name">- Marcus, age 5</p>
+                        </div>
+                        
+                        <div class="student-voice">
+                            <p>"I see blocks. I think we can build a tower. I wonder how tall we can make it before it falls."</p>
+                            <p class="student-name">- Sophia, age 5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources and Tips -->
+    <section class="py-16 px-4 bg-gray-50">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="font-display text-4xl text-center mb-12 text-gray-800">Tips for Success</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card rounded-xl p-6">
+                    <h3 class="font-display text-xl mb-4 text-blue-600">Getting Started</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Choose high-quality, interesting images</li>
+                        <li>• Start with familiar objects for young children</li>
+                        <li>• Model your own thinking first</li>
+                        <li>• Accept all observations without judgment</li>
+                        <li>• Use the language stems consistently</li>
+                    </ul>
+                </div>
+                
+                <div class="card rounded-xl p-6">
+                    <h3 class="font-display text-xl mb-4 text-green-600">Advanced Practice</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Use with science observations</li>
+                        <li>• Apply to story illustrations</li>
+                        <li>• Document thinking over time</li>
+                        <li>• Connect to curriculum topics</li>
+                        <li>• Encourage peer-to-peer discussion</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="mb-2">&copy; 2025 Thinking Routines Practice in Kindergarten</p>
+            <p class="text-gray-400 text-sm">
+                Inspired by Harvard Project Zero | CS50 Week 10 Final Project
+            </p>
+        </div>
+    </footer>
+
+    <!-- Main JavaScript -->
+    <script src="main.js"></script>
+</body>
+</html>

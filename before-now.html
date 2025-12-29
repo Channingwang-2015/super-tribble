@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Before I Think, Now I Know | Thinking Routines Practice in Kindergarten</title>
+    <meta name="description" content="Explore the Before I Think, Now I Know thinking routine in kindergarten. Help children reflect on their learning journey and see how their thinking has grown.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Open+Sans:wght@300;400;600;700&family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --sky-blue: #87CEEB;
+            --warm-coral: #FF7F7F;
+            --sage-green: #9CAF88;
+            --creamy-white: #FFF8DC;
+            --golden-yellow: #FFD700;
+            --lavender: #E6E6FA;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, var(--creamy-white) 0%, #f8f9ff 50%, var(--lavender) 100%);
+            min-height: 100vh;
+        }
+
+        .font-display {
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .font-handwriting {
+            font-family: 'Comic Neue', cursive;
+        }
+
+        .card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .comparison-slider {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            cursor: ew-resize;
+        }
+
+        .before-image, .after-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .after-image {
+            clip-path: inset(0 50% 0 0);
+        }
+
+        .slider-handle {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: white;
+            cursor: ew-resize;
+            z-index: 10;
+        }
+
+        .slider-handle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .before-label {
+            color: #666;
+        }
+
+        .after-label {
+            color: var(--sage-green);
+        }
+
+        .reflection-journal {
+            background: linear-gradient(135deg, #fff9e6, #fff5cc);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .reflection-journal textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+            background: white;
+        }
+
+        .reflection-journal textarea:focus {
+            outline: none;
+            border-color: var(--golden-yellow);
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--golden-yellow), var(--sage-green));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 40px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin: 0 30px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 10px solid transparent;
+            border-left-color: white;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 10px solid transparent;
+            border-right-color: white;
+        }
+
+        .timeline-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--golden-yellow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            z-index: 10;
+            position: relative;
+        }
+
+        .thinking-evolution {
+            background: linear-gradient(135deg, #ffe6e6, #fff0f0);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .before-thinking {
+            border-left: 4px solid #ccc;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(255,255,255,0.7);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .after-thinking {
+            border-left: 4px solid var(--sage-green);
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(255,255,255,0.7);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .upload-zone {
+            border: 3px dashed var(--golden-yellow);
+            transition: all 0.3s ease;
+        }
+
+        .upload-zone:hover, .upload-zone.drag-over {
+            border-color: var(--sage-green);
+            background: rgba(156, 175, 136, 0.1);
+        }
+
+        .uploaded-photo {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .uploaded-photo img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery-photo {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-photo:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-photo img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .gallery-photo .photo-info {
+            padding: 12px;
+            background: white;
+        }
+
+        .growth-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .growth-arrow {
+            font-size: 2rem;
+            color: var(--sage-green);
+            margin: 0 20px;
+        }
+
+        .thinking-stage {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            flex: 1;
+        }
+
+        .before-stage {
+            background: linear-gradient(135deg, #ffe6e6, #fff0f0);
+            border: 2px solid #ffcccc;
+        }
+
+        .after-stage {
+            background: linear-gradient(135deg, #e6ffe6, #f0fff0);
+            border: 2px solid #ccffcc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="font-display text-xl text-gray-800">Thinking Routines</h1>
+                    <span class="ml-2 text-sm text-gray-600">Before I Think, Now I Know</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 transition-colors">Home</a>
+                    <a href="see-think-wonder.html" class="text-gray-700 hover:text-blue-600 transition-colors">See-Think-Wonder</a>
+                    <a href="before-now.html" class="text-blue-600 font-semibold">Before-Now</a>
+                    <a href="color-symbol-image.html" class="text-gray-700 hover:text-blue-600 transition-colors">Color-Symbol-Image</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-16 px-4 bg-gradient-to-r from-yellow-50 to-orange-50">
+        <div class="max-w-4xl mx-auto text-center">
+            <img src="used-to-think-visual.png" alt="Before-Now routine" class="w-48 h-48 mx-auto mb-8 rounded-2xl shadow-lg">
+            <h1 class="font-display text-5xl md:text-6xl mb-6 text-gray-800">
+                <span class="typewriter">Before I Think,<br>Now I Know</span>
+            </h1>
+            <p class="text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
+                A reflection routine that helps students recognize how their thinking has changed and grown over time. 
+                Perfect for building metacognitive awareness and celebrating learning progress.
+            </p>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="font-display text-4xl text-center mb-12 text-gray-800">How Before-Now Works</h2>
+            
+            <div class="growth-indicator">
+                <div class="thinking-stage before-stage">
+                    <h3 class="font-display text-2xl mb-3 text-gray-700">Before I Think</h3>
+                    <p class="text-gray-600">What did I used to believe or think about this topic?</p>
+                    <div class="mt-4 font-handwriting text-lg text-gray-500">
+                        "I used to think..."
+                    </div>
+                </div>
+                
+                <div class="growth-arrow">→</div>
+                
+                <div class="thinking-stage after-stage">
+                    <h3 class="font-display text-2xl mb-3 text-gray-700">Now I Know</h3>
+                    <p class="text-gray-600">How has my thinking changed or evolved?</p>
+                    <div class="mt-4 font-handwriting text-lg text-gray-500">
+                        "Now I think..."
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card rounded-2xl p-8 mt-12">
+                <h3 class="font-display text-2xl mb-6 text-center text-gray-800">The Power of Reflection</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="font-semibold text-lg mb-4 text-yellow-600">Why Use This Routine?</h4>
+                        <ul class="space-y-2 text-gray-700">
+                            <li>• Builds metacognitive awareness</li>
+                            <li>• Celebrates learning growth</li>
+                            <li>• Makes learning visible to students</li>
+                            <li>• Encourages reflective thinking</li>
+                            <li>• Helps students value their progress</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg mb-4 text-green-600">Best Times to Use</h4>
+                        <ul class="space-y-2 text-gray-700">
+                            <li>• End of a unit or topic</li>
+                            <li>• After a significant learning experience</li>
+                            <li>• During portfolio reviews</li>
+                            <li>• Before and after field trips</li>
+                            <li>• When studying complex concepts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Student Reflections -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="font-display text-4xl text-center mb-12 text-gray-800">Student Reflections</h2>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Student Work Carousel -->
+                <div>
+                    <h3 class="font-display text-xl mb-4 text-center text-gray-800">Learning About Seasons</h3>
+                    <div class="splide" data-routine="before-now">
+                        <div class="splide__track">
+                            <ul class="splide__list">
+                                <li class="splide__slide">
+                                    <div class="card rounded-xl p-4">
+                                        <img src="https://kimi-web-img.moonshot.cn/img/news.utexas.edu/33a6829be0e43d3824a9baa8097a571962e2d64d.jpg" 
+                                             alt="Student seasonal reflection" class="w-full h-48 object-cover rounded-lg mb-4">
+                                        <p class="text-sm text-gray-600 text-center">Student reflection on seasonal changes</p>
+                                    </div>
+                                </li>
+                                <li class="splide__slide">
+                                    <div class="card rounded-xl p-4">
+                                        <img src="https://kimi-web-img.moonshot.cn/img/cdn.shopify.com/37fd5fd01fb3edd37a3510d47ec500791b369417.jpg" 
+                                             alt="Seasonal thinking documentation" class="w-full h-48 object-cover rounded-lg mb-4">
+                                        <p class="text-sm text-gray-600 text-center">Documentation of thinking evolution</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Reflection Quote -->
+                <div>
+                    <div class="thinking-evolution">
+                        <h3 class="font-display text-xl mb-4 text-gray-800">Learning About Seasons</h3>
+                        <div class="before-thinking">
+                            <h4 class="font-semibold mb-2 text-gray-600">Before I Think:</h4>
+                            <p class="font-handwriting text-gray-700">"I used to think winter was just cold and I didn't like it because we couldn't play outside."</p>
+                            <p class="text-sm text-gray-500 mt-2">- Maria, age 5 (September)</p>
+                        </div>
+                        <div class="after-thinking">
+                            <h4 class="font-semibold mb-2 text-green-600">Now I Know:</h4>
+                            <p class="font-handwriting text-gray-700">"Now I think winter is important because the trees need to rest, and I love seeing snowflakes. We can build snowmen and drink hot chocolate!"</p>
+                            <p class="text-sm text-gray-500 mt-2">- Maria, age 5 (January)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Tips and Resources -->
+    <section class="py-16 px-4 bg-gradient-to-r from-yellow-50 to-orange-50">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="font-display text-4xl text-center mb-12 text-gray-800">Tips for Success</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card rounded-xl p-6">
+                    <h3 class="font-display text-xl mb-4 text-yellow-600">Getting Started</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Start with simple, concrete topics</li>
+                        <li>• Model your own thinking changes</li>
+                        <li>• Create a safe space for reflection</li>
+                        <li>• Celebrate all thinking growth</li>
+                        <li>• Use visual documentation</li>
+                    </ul>
+                </div>
+                
+                <div class="card rounded-xl p-6">
+                    <h3 class="font-display text-xl mb-4 text-green-600">Advanced Practice</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Connect to learning standards</li>
+                        <li>• Use with individual conferences</li>
+                        <li>• Create class reflection books</li>
+                        <li>• Involve families in reflection</li>
+                        <li>• Document long-term growth</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="mb-2">&copy; 2025 Thinking Routines Practice in Kindergarten</p>
+            <p class="text-gray-400 text-sm">
+                Inspired by Harvard Project Zero | CS50 Week 10 Final Project
+            </p>
+        </div>
+    </footer>
+
+    <!-- Main JavaScript -->
+    <script src="main.js"></script>
+    
+    <script>
+        function saveReflection() {
+            const beforeText = document.querySelector('[data-routine="before-now-before"]').value;
+            const afterText = document.querySelector('[data-routine="before-now-after"]').value;
+            
+            if (beforeText.trim() || afterText.trim()) {
+                localStorage.setItem('journal_before-now-before', beforeText);
+                localStorage.setItem('journal_before-now-after', afterText);
+                showNotification('Reflection saved successfully!', 'success');
+            } else {
+                showNotification('Please write something before saving.', 'info');
+            }
+        }
+    </script>
+</body>
+</html>
